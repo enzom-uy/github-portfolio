@@ -1,8 +1,11 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
+import { User } from "../types/user";
+import { authOptions } from "./api/auth/[...nextauth]";
 
-const Home: NextPage = () => {
-
+const Home: NextPage<{ user: User }> = ({ user }) => {
   return (
     <>
       <Head>
@@ -17,8 +20,8 @@ const Home: NextPage = () => {
             <p className="font-medium">Search</p>
             <input type="text" className="input h-auto focus:outline-none" />
           </div>
-          <p>or</p>
-          <button className="bg-accent px-4 py-2 rounded-lg hover:bg-accent-light text-white">Login</button>
+          {!user && <><p>or</p>
+            <button className="bg-accent px-4 py-2 rounded-lg hover:bg-accent-light text-white" onClick={() => signIn('github')}>Login</button></>}
         </div>
       </main>
 
@@ -27,3 +30,23 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  const user = session?.user
+  if (!session) {
+    return {
+      redirect: {
+        destination: 'https://google.com/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      user
+    }
+  }
+
+}
