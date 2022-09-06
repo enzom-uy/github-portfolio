@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html[data-theme='dark'] {
+  background-color: #0D1117;
+}
+
+html[data-theme='light'] {
+  background-color: #F6F8FA;
+}
+
+* {
+  transition-property: all;
+  transition-duration: 200ms;
+}
