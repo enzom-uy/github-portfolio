@@ -2,7 +2,7 @@ export type Repo = {
   clone_url: string
   created_at: string
   default_branch: string
-  description: null
+  description: string | null
   disabled: boolean
   fork: boolean
   forks: number

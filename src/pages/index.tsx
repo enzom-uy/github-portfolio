@@ -1,11 +1,10 @@
-import type { GetServerSideProps, NextPage } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { signIn } from "next-auth/react";
-import Head from "next/head";
-import SearchUser from "../components/search-user";
-import { UserSession } from "../types/user";
-import { authOptions } from "./api/auth/[...nextauth]";
-
+import type { GetServerSideProps, NextPage } from 'next'
+import { unstable_getServerSession } from 'next-auth'
+import { signIn } from 'next-auth/react'
+import Head from 'next/head'
+import SearchUser from '../components/search-user'
+import { UserSession } from '../types/user'
+import { authOptions } from './api/auth/[...nextauth]'
 
 const Home: NextPage<{ user: UserSession }> = ({ user }) => {
   return (
@@ -29,7 +28,7 @@ const Home: NextPage<{ user: UserSession }> = ({ user }) => {
               <p>or</p>
               <button
                 className="bg-accent px-4 py-2 rounded-lg hover:bg-accent-light text-white"
-                onClick={() => signIn("github")}
+                onClick={() => signIn('github')}
               >
                 Login
               </button>
@@ -38,25 +37,25 @@ const Home: NextPage<{ user: UserSession }> = ({ user }) => {
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
-  const user = session?.user;
+  const session = await unstable_getServerSession(req, res, authOptions)
+  const user = session?.user
   if (!session) {
     return {
       redirect: {
-        destination: "https://google.com/",
+        destination: 'https://google.com/',
         permanent: false,
       },
-    };
+    }
   }
   return {
     props: {
       user,
     },
-  };
-};
+  }
+}

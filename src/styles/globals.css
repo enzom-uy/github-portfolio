@@ -9,5 +9,9 @@ body {
 body {
   transition-property: all;
   transition-duration: 100ms;
-  background: #0D1117;
+  background: #0d1117;
+}
+
+a:hover {
+  text-decoration: underline;
 }

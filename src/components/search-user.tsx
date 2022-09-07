@@ -1,36 +1,39 @@
-import { FormEvent, useContext, useState } from "react"
-import axios from "axios"
-import { githubGetUserUrl } from "../helpers/variables"
-import { GithubUser } from "../types/user"
-import { Repo } from "../types/repos"
-import { useRouter } from "next/router"
-import { GithubUserContext } from "../context/github-user-context"
-import useLocalStorage from "use-local-storage"
+import { FormEvent, useContext, useState } from 'react'
+import axios from 'axios'
+import { githubGetUserUrl } from '../helpers/variables'
+import { GithubUser } from '../types/user'
+import { Repo } from '../types/repos'
+import { useRouter } from 'next/router'
+import { GithubUserContext } from '../context/github-user-context'
+import useLocalStorage from 'use-local-storage'
 
 const SearchUser: React.FC = () => {
   const router = useRouter()
   const [inputValue, setInputValue] = useState<string>('')
-  const [githubUser, setGithubUser] = useLocalStorage<string>("githubUser", "")
+  const [githubUser, setGithubUser] = useLocalStorage<string>('githubUser', '')
   const [error, setError] = useState<boolean>(false)
   const { getUserData } = useContext(GithubUserContext)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    const userData = await axios.get(`${githubGetUserUrl}/${inputValue}`).then(res => res.data).catch(() => setError(true)) as GithubUser
+    const userData = (await axios
+      .get(`${githubGetUserUrl}/${inputValue}`)
+      .then((res) => res.data)
+      .catch(() => setError(true))) as GithubUser
     if (!userData) {
       return
     }
 
-    const userRepos = await axios.get(`${githubGetUserUrl}/${inputValue}/repos`).then(res => res.data) as Repo[]
+    const userRepos = (await axios
+      .get(`${githubGetUserUrl}/${inputValue}/repos`)
+      .then((res) => res.data)) as Repo[]
     if (userData) {
       setGithubUser(inputValue)
       if (getUserData) {
         getUserData(userData, userRepos)
       }
       router.push({ pathname: `/account` })
-
     }
-
   }
 
   return (
