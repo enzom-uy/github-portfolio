@@ -55,8 +55,8 @@ export default Home
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
-  const user = session?.user
   if (session) {
+    const user = session?.user
     return {
       props: {
         user,
