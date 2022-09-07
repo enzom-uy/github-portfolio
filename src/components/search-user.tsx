@@ -5,10 +5,12 @@ import { GithubUser } from "../types/user"
 import { Repo } from "../types/repos"
 import { useRouter } from "next/router"
 import { GithubUserContext } from "../context/github-user-context"
+import useLocalStorage from "use-local-storage"
 
 const SearchUser: React.FC = () => {
   const router = useRouter()
   const [inputValue, setInputValue] = useState<string>('')
+  const [githubUser, setGithubUser] = useLocalStorage<string>("githubUser", "")
   const [error, setError] = useState<boolean>(false)
   const { getUserData } = useContext(GithubUserContext)
 
@@ -21,6 +23,7 @@ const SearchUser: React.FC = () => {
 
     const userRepos = await axios.get(`${githubGetUserUrl}/${inputValue}/repos`).then(res => res.data) as Repo[]
     if (userData) {
+      setGithubUser(inputValue)
       if (getUserData) {
         getUserData(userData, userRepos)
       }

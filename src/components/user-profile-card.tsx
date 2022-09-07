@@ -1,15 +1,18 @@
 import Image from "next/image"
+import { GithubUser } from "../types/user"
 
 interface IProps {
-  username: string
-  imageUrl: string
+  user: GithubUser
 }
 
-const UserProfileCard: React.FC<IProps> = ({ username, imageUrl }) => {
+const UserProfileCard: React.FC<IProps> = ({ user }) => {
   return (
-    <div>
-      <h1>{username}</h1>
-      <Image src={imageUrl} width={200} height={200} className="rounded-full" />
+    <div className="flex flex-col w-fit items-center">
+      <h1 className="font-semibold tracking-wide text-xl">{user.login}</h1>
+      <Image src={user.avatar_url} width={200} height={200} className="rounded-full" priority />
+      <section>
+        <p></p>
+      </section>
     </div>
   )
 }
