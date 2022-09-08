@@ -9,14 +9,11 @@ const MediaCircle: React.FC<{ icon: ReactNode; href: string }> = ({
   href,
 }) => {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="rounded-full p-2 transition-all duration-300 shadow-xl hover:shadow-stone-900 hover:scale-125"
-    >
-      {icon}
-    </a>
+    <div className="rounded-full p-2 transition-all duration-300 shadow-floating-icon hover:shadow-2xl hover:scale-125">
+      <a href={href} target="_blank" rel="noreferrer" className="">
+        {icon}
+      </a>
+    </div>
   )
 }
 

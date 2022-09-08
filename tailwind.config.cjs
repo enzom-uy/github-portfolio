@@ -18,6 +18,8 @@ module.exports = {
       },
       boxShadow: {
         card: '0 20px 30px 10px rgba(0, 0, 0, 0.3)',
+        'floating-icon': '0px 8px 24px rgba(0, 0, 0, 0.2)',
+        'repo-card': '0 20px 15px rgba(0, 0, 0, 0.3)',
       },
     },
   },

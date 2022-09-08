@@ -10,25 +10,25 @@ const useGetUserInfo = (userSearched: boolean, userData: GithubUser) => {
   const [data, setData] = useState<GithubUser>()
   const [repos, setRepos] = useState<Repo[]>()
   const [username] = useLocalStorage('githubUser', undefined)
+  const searchQuery = userSearched && userData.login
+  const localStorageQuery = !userSearched && username !== '' && username
   useEffect(() => {
-    if (!userSearched && username !== '') {
-      const fetch = async () => {
-        const data = (await axios
-          .get(`${githubGetUserUrl}/${username}`)
-          .then((res) => res.data)) as GithubUser
-        if (!userData) {
-          return
-        }
-        setData(data)
-
-        const userRepos = (await axios
-          .get(`${githubGetUserUrl}/${username}/repos`)
-          .then((res) => res.data)) as Repo[]
-        setRepos(userRepos)
-        setLoading(false)
+    const fetch = async () => {
+      const data = (await axios
+        .get(`${githubGetUserUrl}/${searchQuery || localStorageQuery}`)
+        .then((res) => res.data)) as GithubUser
+      if (!userData) {
+        return
       }
-      fetch()
+      setData(data)
+
+      const userRepos = (await axios
+        .get(`${githubGetUserUrl}/${searchQuery || localStorageQuery}/repos`)
+        .then((res) => res.data)) as Repo[]
+      setRepos(userRepos)
+      setLoading(false)
     }
+    fetch()
   }, [])
   return { data, repos, username, userData, loading }
 }

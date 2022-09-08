@@ -36,6 +36,17 @@ const Home: NextPage<{ user: UserSession }> = ({ user }) => {
           )}
         </div>
       </main>
+      <div>
+        <p className="absolute bottom-4 w-full text-center">
+          This project is the result of me being bored. <br /> If you make
+          multiple requests, the GitHub API will fail. <br />
+          If you actually use this project to view someone&apos;s repos,
+          <br /> remember that GitHub is kind of a personal/private place for
+          developers.
+          <br /> You will not only see their side projects, but also their
+          because-i-was-bored projects.
+        </p>
+      </div>
     </>
   )
 }
@@ -45,17 +56,14 @@ export default Home
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
   const user = session?.user
-  if (!session) {
+  if (session) {
     return {
-      redirect: {
-        destination: 'https://google.com/',
-        permanent: false,
+      props: {
+        user,
       },
     }
   }
   return {
-    props: {
-      user,
-    },
+    props: {},
   }
 }

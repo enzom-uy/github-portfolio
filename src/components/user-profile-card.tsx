@@ -1,11 +1,14 @@
 import Image from 'next/image'
 import { GithubUser } from '../types/user'
+import { AiOutlineUser, AiOutlineLink } from 'react-icons/ai'
+import { RiGitRepositoryLine } from 'react-icons/ri'
 
 interface IProps {
   user: GithubUser
+  reposQuantity: number | undefined
 }
 
-const UserProfileCard: React.FC<IProps> = ({ user }) => {
+const UserProfileCard: React.FC<IProps> = ({ user, reposQuantity }) => {
   const userWebsiteHasHttp = user.blog.includes('https://' || 'http://')
   const fullLink = `https://${user.blog}`
   const userReposLink = `https://github.com/${user.login}/?tab=repositories`
@@ -20,29 +23,40 @@ const UserProfileCard: React.FC<IProps> = ({ user }) => {
         <h1 className="font-semibold tracking-wide text-xl">{user.name}</h1>
         <Image
           src={user.avatar_url}
-          width={200}
-          height={200}
+          width={160}
+          height={160}
           className="rounded-full"
           alt=""
           priority
         />
-        <p className="mb-2">{user.login}</p>
       </a>
-      <section className="flex flex-col items-center text-center gap-2">
+      <section className="flex flex-col items-start gap-2 mt-4 px-2">
+        <div className="flex gap-2 items-center justify-center">
+          <AiOutlineUser fontSize="1.3rem" />
+          <p className="">{user.login}</p>
+        </div>
         <p className="max-w-[24ch]">{user.bio}</p>
-        <p>
-          Repositories:{' '}
-          <a href={userReposLink} target="_blank" rel="noreferrer">
-            {user.public_repos}
-          </a>
-        </p>
-        <a
-          target="_blank"
-          href={userWebsiteHasHttp ? user.blog : fullLink}
-          rel="noreferrer"
-        >
-          {user.blog}
-        </a>
+        <div className="flex items-center gap-2">
+          <RiGitRepositoryLine fontSize="1.3rem" />
+          <p>
+            Repositories:{' '}
+            <a href={userReposLink} target="_blank" rel="noreferrer">
+              {reposQuantity !== 0 ? reposQuantity : 0}
+            </a>
+          </p>
+        </div>
+        {user.blog && (
+          <div className="flex items-center gap-2">
+            <AiOutlineLink fontSize="1.3rem" />
+            <a
+              target="_blank"
+              href={userWebsiteHasHttp ? user.blog : fullLink}
+              rel="noreferrer"
+            >
+              {user.blog}
+            </a>
+          </div>
+        )}
       </section>
     </div>
   )
